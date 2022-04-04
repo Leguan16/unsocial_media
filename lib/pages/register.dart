@@ -1,0 +1,101 @@
+import 'package:flutter/material.dart';
+
+import '../dialogs/already_logged_in.dart';
+import '../user_management/user_manager.dart';
+import 'login.dart';
+import 'profile.dart';
+
+
+class Register extends StatelessWidget {
+  Register({Key? key}) : super(key: key);
+
+  static const String route = "/register";
+
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    final _formKey = GlobalKey<FormState>();
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Register"),
+      ),
+      body: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            TextFormField(
+              decoration: InputDecoration(
+                labelText: "Username",
+              ),
+              controller: usernameController,
+              validator: validateUsername,
+            ),
+            TextFormField(
+              obscureText: true,
+              decoration: InputDecoration(
+                labelText: "Password",
+              ),
+              controller: passwordController,
+              validator: validatePassword,
+            ),
+            TextFormField(
+              obscureText: true,
+              decoration: InputDecoration(
+                labelText: "Repeat Password",
+              ),
+              controller: confirmPasswordController,
+              validator: validatePassword,
+            ),
+            ElevatedButton(
+              child: Text("Register"),
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  var response = UserManager.createUser(
+                      usernameController.text, passwordController.text);
+
+                  if (response == 1) {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlreadyLoggedInDialog();
+                        });
+                  } else {
+                    Navigator.pushNamed(context, Profile.route);
+                  }
+                }
+              },
+            ),
+            TextButton(
+              onPressed: () =>
+                  Navigator.popAndPushNamed(context, LoginPage.route),
+              child: Text("Already registered? Log in"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  String? validateUsername(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Please enter a username";
+    }
+    return null;
+  }
+
+  String? validatePassword(String? password) {
+    if (password == null || password.isEmpty) {
+      return "Please enter a password";
+    }
+
+    if (passwordController.text != confirmPasswordController.text) {
+      return "passwords don't match";
+    }
+
+    return null;
+  }
+}
