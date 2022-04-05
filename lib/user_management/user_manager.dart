@@ -16,7 +16,7 @@ class UserManager {
 
     //todo request, add user to db
 
-    _user = User(username, Uuid().v1());
+    _user = User(username, Uuid().v1(), password);
 
     return login();
   }
