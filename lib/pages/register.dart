@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:unsocial_media/domain/user.dart';
 
 import '../dialogs/already_logged_in.dart';
+import '../dialogs/username_already_in_use.dart';
 import '../user_management/user_manager.dart';
 import 'login.dart';
 import 'profile.dart';
-
 
 class Register extends StatelessWidget {
   Register({Key? key}) : super(key: key);
@@ -21,14 +22,14 @@ class Register extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Register"),
+        title: const Text("Register"),
       ),
       body: Form(
         key: _formKey,
         child: Column(
           children: [
             TextFormField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Username",
               ),
               controller: usernameController,
@@ -36,7 +37,7 @@ class Register extends StatelessWidget {
             ),
             TextFormField(
               obscureText: true,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Password",
               ),
               controller: passwordController,
@@ -44,35 +45,46 @@ class Register extends StatelessWidget {
             ),
             TextFormField(
               obscureText: true,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Repeat Password",
               ),
               controller: confirmPasswordController,
               validator: validatePassword,
             ),
             ElevatedButton(
-              child: Text("Register"),
-              onPressed: () {
+              child: const Text("Register"),
+              onPressed: () async {
                 if (_formKey.currentState!.validate()) {
-                  var response = UserManager.createUser(
+                  var response = await UserManager.createUser(
                       usernameController.text, passwordController.text);
 
                   if (response == 1) {
                     showDialog(
                         context: context,
                         builder: (context) {
-                          return AlreadyLoggedInDialog();
+                          return const AlreadyLoggedInDialog();
                         });
-                  } else {
+                  }
+
+                  if(response.runtimeType == User) {
                     Navigator.pushNamed(context, Profile.route);
                   }
+
+                  if (!response) {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return const UserNameAlreadyTakenDialog();
+                        });
+                  }
+
                 }
               },
             ),
             TextButton(
               onPressed: () =>
                   Navigator.popAndPushNamed(context, LoginPage.route),
-              child: Text("Already registered? Log in"),
+              child: const Text("Already registered? Log in"),
             ),
           ],
         ),

@@ -7,14 +7,14 @@ class AccountDoesNotExistDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("Error"),
-      content: Text("Account does not exist!"),
+      title: const Text("Error"),
+      content: const Text("Account does not exist!"),
       actions: [
         ElevatedButton(
-            onPressed: () => Navigator.pop(context), child: Text("OK")),
+            onPressed: () => Navigator.pop(context), child: const Text("OK")),
         ElevatedButton(
             onPressed: () => Navigator.pushNamed(context, Register.route),
-            child: Text("Register")),
+            child: const Text("Register")),
       ],
     );
   }

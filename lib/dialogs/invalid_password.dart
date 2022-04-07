@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class AlreadyLoggedInDialog extends StatelessWidget {
-  const AlreadyLoggedInDialog({Key? key}) : super(key: key);
+class InvalidPasswordDialog extends StatelessWidget {
+  const InvalidPasswordDialog({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text("Error!"),
+      title: const Text("Invalid passwprd!"),
       content: const Text(
-          "You are already logged in. Please log out!"),
+          "The provided password is incorrect"),
       actions: [
         ElevatedButton(
             onPressed: () {

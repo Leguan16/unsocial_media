@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unsocial_media/pages/settings.dart';
 import 'package:unsocial_media/user_management/user_manager.dart';
 
 class ProfileDrawer extends StatelessWidget {
@@ -9,6 +10,13 @@ class ProfileDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<ListTile> _drawerContent = [
+      ListTile(
+        title: Text("Settings"),
+        trailing: Icon(Icons.settings),
+        onTap: () {
+          Navigator.pushNamed(context, SettingsPage.route);
+        },
+      ),
       ListTile(
         title: Text("Log Out"),
         trailing: Icon(Icons.logout),
@@ -26,6 +34,7 @@ class ProfileDrawer extends StatelessWidget {
                 color: Colors.green,
               ),
           itemCount: _drawerContent.length),
+
     );
   }
 }

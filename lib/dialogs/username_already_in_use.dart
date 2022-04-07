@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class AlreadyLoggedInDialog extends StatelessWidget {
-  const AlreadyLoggedInDialog({Key? key}) : super(key: key);
+class UserNameAlreadyTakenDialog extends StatelessWidget {
+  const UserNameAlreadyTakenDialog({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: const Text("Error!"),
       content: const Text(
-          "You are already logged in. Please log out!"),
+          "This username is already taken"),
       actions: [
         ElevatedButton(
             onPressed: () {

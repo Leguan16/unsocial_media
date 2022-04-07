@@ -7,6 +7,8 @@ import 'package:unsocial_media/pages/login.dart';
 import 'package:unsocial_media/pages/profile.dart';
 import 'package:unsocial_media/pages/register.dart';
 import 'package:unsocial_media/pages/search.dart';
+import 'package:unsocial_media/pages/settings.dart';
+import 'package:unsocial_media/pages/settings/settings_profile.dart';
 import 'package:unsocial_media/requests/user_request.dart';
 
 void main() async{
@@ -30,6 +32,8 @@ class MyApp extends StatelessWidget {
         LoginPage.route: (_) => LoginPage(),
         CreatePostPage.route: (_) => CreatePostPage(),
         SearchPage.route: (_) => SearchPage(),
+        SettingsPage.route: (_) => SettingsPage(),
+        ProfileSettings.route: (_) => ProfileSettings(),
       },
       darkTheme: ThemeData.dark().copyWith(
           focusColor: Colors.red,

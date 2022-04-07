@@ -9,17 +9,28 @@ class User {
   String? profileAvatar;
   late String hashedPassword;
 
-  User(this.name, this.id, String password, [String? profileAvatarUrl]) {
+  User(this.name, this.id, String password, [String? profileAvatarUrl, String? hashedPassword]) {
     if(profileAvatarUrl != null) {
       setProfileAvatar(profileAvatarUrl);
     }
 
-    hashedPassword = sha256.convert(utf8.encode(password)).toString();
+    this.hashedPassword = hashedPassword ?? sha256.convert(utf8.encode(password)).toString();
   }
 
   setProfileAvatar(String profileAvatarUrl) {
     profileAvatar = profileAvatarUrl;
   }
 
+  factory User.fromJson(Map<String, dynamic> json) {
+
+    return User(
+      json['username'],
+      json['id'],
+      json['passwordHash'],
+      json['profileAvatarUrl'],
+      json['passwordHash'],
+    );
+
+  }
 
 }
