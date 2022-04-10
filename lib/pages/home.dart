@@ -15,10 +15,12 @@ class HomePage extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () {
-                UserManager.checkIfLoggedIn(context);
-
-                Navigator.pushNamed(context, Profile.route,
-                    arguments: UserManager.getUser());
+                if (!UserManager.userLoggedIn()) {
+                  Navigator.of(context).pushNamed(Register.route);
+                } else {
+                  Navigator.pushNamed(context, Profile.route,
+                      arguments: UserManager.getUser());
+                }
               },
               icon: Icon(Icons.account_circle_outlined))
         ],

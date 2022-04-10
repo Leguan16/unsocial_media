@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:unsocial_media/drawers/profile_drawer.dart';
-import 'package:unsocial_media/user_management/user_manager.dart';
-import 'package:unsocial_media/widgets/bottom_app_bar.dart';
+
+import '../drawers/profile_drawer.dart';
+import '../user_management/user_manager.dart';
+import '../widgets/bottom_app_bar.dart';
 
 class Profile extends StatelessWidget {
   const Profile({Key? key}) : super(key: key);
@@ -10,8 +11,6 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UserManager.checkIfLoggedIn(context);
-
     return Scaffold(
       appBar: AppBar(
         title: Text("Profile"),

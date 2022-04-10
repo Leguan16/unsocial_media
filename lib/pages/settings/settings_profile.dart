@@ -9,7 +9,6 @@ class ProfileSettings extends StatelessWidget {
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
 
-
     return Scaffold(
       appBar: AppBar(
         title: Text("Profile Settings"),

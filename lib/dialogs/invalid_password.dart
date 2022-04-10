@@ -6,9 +6,8 @@ class InvalidPasswordDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text("Invalid passwprd!"),
-      content: const Text(
-          "The provided password is incorrect"),
+      title: const Text("Invalid password!"),
+      content: const Text("The provided password is incorrect"),
       actions: [
         ElevatedButton(
             onPressed: () {

@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:unsocial_media/domain/user.dart';
-import 'package:unsocial_media/pages/createPost.dart';
-import 'package:unsocial_media/pages/home.dart';
-import 'package:unsocial_media/pages/login.dart';
-import 'package:unsocial_media/pages/profile.dart';
-import 'package:unsocial_media/pages/register.dart';
-import 'package:unsocial_media/pages/search.dart';
-import 'package:unsocial_media/pages/settings.dart';
-import 'package:unsocial_media/pages/settings/settings_profile.dart';
-import 'package:unsocial_media/requests/user_request.dart';
 
-void main() async{
+import 'pages/createPost.dart';
+import 'pages/home.dart';
+import 'pages/login.dart';
+import 'pages/profile.dart';
+import 'pages/register.dart';
+import 'pages/search.dart';
+import 'pages/settings.dart';
+import 'pages/settings/settings_profile.dart';
+
+void main() async {
   await dotenv.load();
 
   runApp(const MyApp());

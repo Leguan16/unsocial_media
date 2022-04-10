@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unsocial_media/dialogs/account_does_not_exist.dart';
 import 'package:unsocial_media/dialogs/invalid_password.dart';
-import 'package:unsocial_media/dialogs/username_already_in_use.dart';
 import 'package:unsocial_media/pages/register.dart';
 
 import '../dialogs/already_logged_in.dart';
@@ -56,21 +55,15 @@ class LoginPage extends StatelessWidget {
                         builder: (context) {
                           return AlreadyLoggedInDialog();
                         });
-                  }
-
-                  if (response == 2) {
+                  } else if (response == 2) {
                     showDialog(
                         context: context,
                         builder: (context) {
                           return InvalidPasswordDialog();
                         });
-                  }
-
-                  if (response.runtimeType == User) {
+                  } else if (response.runtimeType == User) {
                     Navigator.pushNamed(context, "/profile");
-                  }
-
-                  if (!response) {
+                  } else if (!response) {
                     showDialog(
                         context: context,
                         builder: (context) {

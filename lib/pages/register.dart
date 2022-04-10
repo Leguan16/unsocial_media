@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:unsocial_media/domain/user.dart';
 
 import '../dialogs/already_logged_in.dart';
 import '../dialogs/username_already_in_use.dart';
+import '../domain/user.dart';
 import '../user_management/user_manager.dart';
 import 'login.dart';
 import 'profile.dart';
@@ -12,9 +12,10 @@ class Register extends StatelessWidget {
 
   static const String route = "/register";
 
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -64,20 +65,15 @@ class Register extends StatelessWidget {
                         builder: (context) {
                           return const AlreadyLoggedInDialog();
                         });
-                  }
-
-                  if(response.runtimeType == User) {
+                  } else if (response.runtimeType == User) {
                     Navigator.pushNamed(context, Profile.route);
-                  }
-
-                  if (!response) {
+                  } else if (!response) {
                     showDialog(
                         context: context,
                         builder: (context) {
                           return const UserNameAlreadyTakenDialog();
                         });
                   }
-
                 }
               },
             ),
