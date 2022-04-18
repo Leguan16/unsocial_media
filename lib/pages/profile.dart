@@ -47,7 +47,8 @@ class Profile extends StatelessWidget {
                                   )
                                 : CircleAvatar(
                                     radius: 30,
-                                    backgroundImage: NetworkImage(
+                                    //todo change this to networkImage
+                                    backgroundImage: FileImage(
                                         UserManager.getUser()!.profileAvatar!),
                                   ),
                             SizedBox(

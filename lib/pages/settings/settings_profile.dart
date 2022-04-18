@@ -1,16 +1,44 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:unsocial_media/pages/profile.dart';
 
 import '../../user_management/user_manager.dart';
 import '../../widgets/bottom_app_bar.dart';
 
-class ProfileSettings extends StatelessWidget {
+class ProfileSettings extends StatefulWidget {
   const ProfileSettings({Key? key}) : super(key: key);
 
   static const String route = "/settings/profile";
 
-  Future pickAnImage() async {
+  @override
+  State<ProfileSettings> createState() => _ProfileSettingsState();
+}
+
+class _ProfileSettingsState extends State<ProfileSettings> {
+  Future pickImageForBanner() async {
+    final image = await pickImage();
+    setState(() {
+      UserManager.getUser()!.profileBanner = image;
+    });
+  }
+
+  Future pickImageForAvatar() async {
+    final image = await pickImage();
+    setState(() {
+      UserManager.getUser()!.profileAvatar = image;
+    });
+  }
+
+  pickImage() async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (image == null) {
+      return;
+    }
+
+    return File(image.path);
   }
 
   @override
@@ -28,11 +56,11 @@ class ProfileSettings extends StatelessWidget {
                     image: UserManager.getUser()!.profileBanner == null
                         ? null
                         : DecorationImage(
-                            image: NetworkImage(
+                            image: FileImage(
                                 UserManager.getUser()!.profileBanner!))),
               ),
               GestureDetector(
-                onTap: () async => pickAnImage(),
+                onTap: () async => pickImageForBanner(),
                 child: Container(
                   color: Colors.black54,
                   height: 130,
@@ -67,28 +95,34 @@ class ProfileSettings extends StatelessWidget {
                               )
                             : CircleAvatar(
                                 radius: 25,
-                                backgroundImage: NetworkImage(
+                                backgroundImage: FileImage(
                                     UserManager.getUser()!.profileAvatar!),
                               ),
-                        CircleAvatar(
-                          radius: 25,
-                          backgroundColor: Colors.black54,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.camera_alt,
-                                color: Colors.black,
-                                size: 20,
-                              ),
-                            ],
+                        GestureDetector(
+                          child: CircleAvatar(
+                            radius: 25,
+                            backgroundColor: Colors.black54,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.camera_alt,
+                                  color: Colors.black,
+                                  size: 20,
+                                ),
+                              ],
+                            ),
                           ),
+                          onTap: () async => pickImageForAvatar(),
                         ),
                       ],
                     ),
                     TextButton(
                       child: Text("Save"),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            Profile.route, (route) => false);
+                      },
                     ),
                   ],
                 )

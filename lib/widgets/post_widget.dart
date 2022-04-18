@@ -21,7 +21,8 @@ class PostWidget extends StatelessWidget {
                 )
               : CircleAvatar(
                   radius: 20,
-                  backgroundImage: NetworkImage(post.author.profileAvatar!),
+                  //todo change this to NetworkImage
+                  backgroundImage: FileImage(post.author.profileAvatar!),
                 ),
           title: Row(
             children: [

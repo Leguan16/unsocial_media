@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:crypto/crypto.dart';
 import 'package:unsocial_media/requests/post_request.dart';
@@ -8,9 +9,11 @@ import 'post.dart';
 class User {
   String name;
   String id;
-  String? profileAvatar;
+  String? profileAvatarUrl;
+  File? profileAvatar;
   late String hashedPassword;
-  String? profileBanner;
+  String? profileBannerUrl;
+  File? profileBanner;
   List<String> posts = [];
 
   User(this.name, this.id, String password,
@@ -18,11 +21,11 @@ class User {
       String? hashedPassword,
       String? profileBannerUrl]) {
     if (profileAvatarUrl != null) {
-      profileAvatar = profileAvatarUrl;
+      this.profileAvatarUrl = profileAvatarUrl;
     }
 
     if (profileBannerUrl != null) {
-      profileBanner = profileBannerUrl;
+      this.profileBannerUrl = profileBannerUrl;
     }
 
     this.hashedPassword =
