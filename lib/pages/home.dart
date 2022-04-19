@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:unsocial_media/dialogs/error_loading_posts.dart';
 import 'package:unsocial_media/pages/profile.dart';
 import 'package:unsocial_media/pages/register.dart';
 import 'package:unsocial_media/provider/post_provider.dart';
@@ -40,10 +39,6 @@ class HomePage extends StatelessWidget {
               return Center(child: CircularProgressIndicator());
             default:
               if (snapshot.hasError) {
-                showDialog(
-                    context: context,
-                    builder: (context) => ErrorLoadingPostsDialog());
-
                 return Text("Failed to load Posts");
               } else {
                 return buildPosts();

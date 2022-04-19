@@ -5,6 +5,7 @@ import 'package:unsocial_media/pages/profile.dart';
 import 'package:unsocial_media/pages/register.dart';
 
 import '../dialogs/already_logged_in.dart';
+import '../dialogs/no_connection.dart';
 import '../domain/user.dart';
 import '../user_management/user_manager.dart';
 
@@ -58,6 +59,10 @@ class LoginPage extends StatelessWidget {
                     showDialog(
                         context: context,
                         builder: (context) => InvalidPasswordDialog());
+                  } else if (response == 503) {
+                    showDialog(
+                        context: context,
+                        builder: (context) => NoConnectionDialog());
                   } else if (response.runtimeType == User) {
                     Navigator.pushNamed(context, Profile.route,
                         arguments: UserManager.getUser());

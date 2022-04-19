@@ -20,6 +20,10 @@ class UserManager {
 
     var response = await UserRequests.getUser(username);
 
+    if (response == 503) {
+      return response;
+    }
+
     if (response.runtimeType == User) {
       return false;
     }

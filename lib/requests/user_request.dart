@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
@@ -24,12 +25,15 @@ class UserRequests {
 
   static Future<dynamic> getUser(String username) async {
     if (dotenv.isInitialized) {
-      var response = await http.get(Uri.parse(
-          '${dotenv.env['firebaseUrl']!}/users/${username.toLowerCase()}.json'));
+      http.Response? response;
+      try {
+        response = (await http.get(Uri.parse(
+            '${dotenv.env['firebaseUrl']!}/users/${username.toLowerCase()}.json')));
+      } on SocketException {
+        return 503;
+      }
 
-      print(response.body);
-
-      if (response.body == 'null') {
+      if (response == null || response.body == 'null') {
         return false;
       }
 

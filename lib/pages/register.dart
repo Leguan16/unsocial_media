@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unsocial_media/dialogs/no_connection.dart';
 
 import '../dialogs/already_logged_in.dart';
 import '../dialogs/username_already_in_use.dart';
@@ -65,6 +66,10 @@ class Register extends StatelessWidget {
                         builder: (context) {
                           return const AlreadyLoggedInDialog();
                         });
+                  } else if (response == 503) {
+                    showDialog(
+                        context: context,
+                        builder: (context) => NoConnectionDialog());
                   } else if (response.runtimeType == User) {
                     Navigator.pushNamed(context, Profile.route,
                         arguments: UserManager.getUser()!);
