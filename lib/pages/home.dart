@@ -19,6 +19,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late Future _posts;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,15 +27,25 @@ class _HomePageState extends State<HomePage> {
         title: Text("Start"),
         actions: [
           IconButton(
-              onPressed: () {
-                if (!UserManager.userLoggedIn()) {
-                  Navigator.of(context).pushNamed(Register.route);
-                } else {
-                  Navigator.pushNamed(context, Profile.route,
-                      arguments: UserManager.getUser());
-                }
-              },
-              icon: Icon(Icons.account_circle_outlined))
+            onPressed: () {
+              if (!UserManager.userLoggedIn()) {
+                Navigator.of(context).pushNamed(Register.route);
+              } else {
+                Navigator.pushNamed(context, Profile.route,
+                    arguments: UserManager.getUser());
+              }
+            },
+            icon: UserManager.userLoggedIn() &&
+                    UserManager.getUser()!.profileAvatarUrl != null
+                ? CircleAvatar(
+                    backgroundImage: Image.network(
+                      UserManager.getUser()!.profileAvatarUrl!,
+                      errorBuilder: (context, error, stackTrace) =>
+                          Icon(Icons.account_circle_outlined),
+                    ).image,
+                  )
+                : Icon(Icons.account_circle_outlined),
+          )
         ],
       ),
       bottomNavigationBar: AppBarBottom(),

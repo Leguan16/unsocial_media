@@ -35,21 +35,23 @@ class CreatePostPage extends StatelessWidget {
                     Navigator.pushNamed(context, Register.route);
                     return;
                   }
-                  var response = PostRequests.postPost(Post(
+                  Future response = PostRequests.postPost(Post(
                       contentController.text,
                       UserManager.getUser()!.name,
                       DateTime.now(),
                       UserManager.getUser()!));
 
-                  if (response == 200) {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                        Profile.route, (route) => false,
-                        arguments: UserManager.getUser()!);
-                  } else {
-                    showDialog(
-                        context: context,
-                        builder: (context) => UnknownErrorDialog(response));
-                  }
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      Profile.route, (route) => false,
+                      arguments: UserManager.getUser()!);
+
+                  response.then((value) {
+                    if (value != 200) {
+                      showDialog(
+                          context: context,
+                          builder: (context) => UnknownErrorDialog(value));
+                    }
+                  });
                 }
               } on SocketException {
                 showDialog(

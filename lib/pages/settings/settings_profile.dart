@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:unsocial_media/dialogs/no_connection.dart';
+import 'package:unsocial_media/dialogs/unknown.dart';
 import 'package:unsocial_media/pages/profile.dart';
 import 'package:unsocial_media/requests/image_requests.dart';
 
@@ -24,11 +25,19 @@ class _ProfileSettingsState extends State<ProfileSettings> {
 
     try {
       var url = await ImageRequests.postImage(image);
-      UserManager.getUser()!.setProfileBannerUrl(url);
 
-      setState(() {
-        UserManager.getUser()!.profileBanner = image;
-      });
+      if (url.runtimeType == String) {
+        UserManager.getUser()!.setProfileBannerUrl(url);
+
+        setState(() {
+          UserManager.getUser()!.profileBanner = image;
+        });
+      } else {
+        showDialog(
+            context: context,
+            builder: (context) =>
+                UnknownErrorDialog(url.runtimeType == int ? url : -100));
+      }
     } on SocketException {
       showDialog(context: context, builder: (context) => NoConnectionDialog());
     }
@@ -40,11 +49,18 @@ class _ProfileSettingsState extends State<ProfileSettings> {
     try {
       var url = await ImageRequests.postImage(image);
 
-      UserManager.getUser()!.setProfileAvatarUrl(url);
+      if (url.runtimeType == String) {
+        UserManager.getUser()!.setProfileAvatarUrl(url);
 
-      setState(() {
-        UserManager.getUser()!.profileAvatar = image;
-      });
+        setState(() {
+          UserManager.getUser()!.profileAvatar = image;
+        });
+      } else {
+        showDialog(
+            context: context,
+            builder: (context) =>
+                UnknownErrorDialog(url.runtimeType == int ? url : -100));
+      }
     } on SocketException {
       showDialog(context: context, builder: (context) => NoConnectionDialog());
     }

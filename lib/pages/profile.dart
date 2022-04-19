@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unsocial_media/domain/user.dart';
+import 'package:unsocial_media/user_management/user_manager.dart';
 import 'package:unsocial_media/widgets/failed_to_load_posts.dart';
 import 'package:unsocial_media/widgets/no_posts.dart';
 import 'package:unsocial_media/widgets/post_widget.dart';
@@ -26,7 +27,8 @@ class _ProfileState extends State<Profile> {
     User user = ModalRoute.of(context)!.settings.arguments as User;
 
     return Scaffold(
-      endDrawer: ProfileDrawer(),
+      endDrawer:
+          user.name == UserManager.getUser()!.name ? ProfileDrawer() : null,
       bottomNavigationBar: AppBarBottom(),
       body: NestedScrollView(
         physics: NeverScrollableScrollPhysics(),

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class ImageRequests {
@@ -15,17 +16,22 @@ class ImageRequests {
 
     request.files.addAll(files);
 
-    request.headers.addAll(
-        {"Authorization": "Bearer b12ee3d46f9936102e3c5ad5ffdad77eede09c6e"});
+    if (dotenv.isInitialized) {
+      request.headers.addAll(
+          {"Authorization": "Bearer ${dotenv.env["imgurAccessToken"]}"});
 
-    var streamedResponse = await request.send();
+      var streamedResponse = await request.send();
 
-    var response = await http.Response.fromStream(streamedResponse);
+      var response = await http.Response.fromStream(streamedResponse);
 
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body)['data']['link'];
+      if (response.statusCode == 200) {
+        print(jsonDecode(response.body)['data']['link']);
+        return jsonDecode(response.body)['data']['link'];
+      }
+    } else {
+      return -1;
     }
 
-    return false;
+    return -200;
   }
 }

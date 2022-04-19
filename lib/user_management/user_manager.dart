@@ -30,7 +30,7 @@ class UserManager {
 
     _user = User(username, Uuid().v1(), password);
 
-    response = UserRequests.postUser(_user!);
+    response = await UserRequests.postUser(_user!);
 
     if (response == 200) {
       return login();
