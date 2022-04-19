@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unsocial_media/pages/profile.dart';
 import 'package:unsocial_media/pages/register.dart';
 import 'package:unsocial_media/user_management/user_manager.dart';
 import 'package:unsocial_media/widgets/bottom_app_bar.dart';
@@ -34,6 +35,10 @@ class CreatePostPage extends StatelessWidget {
                     UserManager.getUser()!.name,
                     DateTime.now(),
                     UserManager.getUser()!));
+
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    Profile.route, (route) => false,
+                    arguments: UserManager.getUser()!);
               }
             },
           )

@@ -14,6 +14,7 @@ class PostRequests {
       "content": post.content,
       "author": post.author.name,
       "time": post.time.millisecondsSinceEpoch,
+      "dislikes": post.dislikes,
     });
 
     if (dotenv.isInitialized) {

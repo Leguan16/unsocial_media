@@ -9,10 +9,12 @@ class Post {
   late User author;
   late String usernameOfAuthor;
   DateTime time;
+  late int dislikes;
 
   Post(this.content, this.usernameOfAuthor, this.time,
-      [User? author, String? id]) {
+      [User? author, String? id, int? dislikes]) {
     this.id = id ?? const Uuid().v1();
+    this.dislikes = dislikes ?? 0;
 
     if (author != null) {
       this.author = author;
@@ -26,6 +28,7 @@ class Post {
       DateTime.fromMillisecondsSinceEpoch(json['time']),
       author,
       json['id'],
+      json['dislikes'],
     );
   }
 
@@ -39,6 +42,6 @@ class Post {
 
   @override
   String toString() {
-    return 'Post{id: $id, content: $content, usernameOfAuthor: $usernameOfAuthor, time: $time}';
+    return 'Post{id: $id, content: $content, usernameOfAuthor: $usernameOfAuthor, time: $time, dislikes: $dislikes}';
   }
 }

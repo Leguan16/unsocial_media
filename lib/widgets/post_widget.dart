@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:unsocial_media/pages/profile.dart';
 
 import '../domain/post.dart';
 
@@ -14,16 +15,20 @@ class PostWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ListTile(
-          leading: post.author.profileAvatar == null
-              ? Icon(
-                  Icons.account_circle_outlined,
-                  size: 40,
-                )
-              : CircleAvatar(
-                  radius: 20,
-                  //todo change this to NetworkImage
-                  backgroundImage: FileImage(post.author.profileAvatar!),
-                ),
+          leading: GestureDetector(
+            child: post.author.profileAvatar == null
+                ? Icon(
+                    Icons.account_circle_outlined,
+                    size: 40,
+                  )
+                : CircleAvatar(
+                    radius: 20,
+                    //todo change this to NetworkImage
+                    backgroundImage: FileImage(post.author.profileAvatar!),
+                  ),
+            onTap: () => Navigator.pushNamed(context, Profile.route,
+                arguments: post.author),
+          ),
           title: Row(
             children: [
               Text(post.author.name),

@@ -27,6 +27,8 @@ class UserRequests {
       var response = await http.get(Uri.parse(
           '${dotenv.env['firebaseUrl']!}/users/${username.toLowerCase()}.json'));
 
+      print(response.body);
+
       if (response.body == 'null') {
         return false;
       }

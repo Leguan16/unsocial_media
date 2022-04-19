@@ -27,4 +27,12 @@ class PostProvider {
 
     return posts;
   }
+
+  static List<Post> getAllPosts() {
+    _posts.sort(
+      (a, b) => b.time.difference(a.time).inMilliseconds,
+    );
+
+    return [..._posts];
+  }
 }

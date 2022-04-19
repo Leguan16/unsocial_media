@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unsocial_media/domain/user.dart';
 import 'package:unsocial_media/widgets/post_widget.dart';
 
 import '../domain/post.dart';
@@ -15,6 +16,7 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var posts = PostProvider.fetch();
+    User user = ModalRoute.of(context)!.settings.arguments as User;
 
     return Scaffold(
       endDrawer: ProfileDrawer(),
@@ -40,7 +42,7 @@ class Profile extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            UserManager.getUser()!.profileAvatar == null
+                            user.profileAvatar == null
                                 ? Icon(
                                     Icons.account_circle_outlined,
                                     size: 50,
@@ -48,8 +50,8 @@ class Profile extends StatelessWidget {
                                 : CircleAvatar(
                                     radius: 30,
                                     //todo change this to networkImage
-                                    backgroundImage: FileImage(
-                                        UserManager.getUser()!.profileAvatar!),
+                                    backgroundImage:
+                                        FileImage(user.profileAvatar!),
                                   ),
                             SizedBox(
                               width: MediaQuery.of(context).size.width * 0.1,
@@ -59,7 +61,7 @@ class Profile extends StatelessWidget {
                               child: Container(
                                 padding: EdgeInsets.symmetric(vertical: 10),
                                 child: Text(
-                                  UserManager.getUser()!.name,
+                                  user.name,
                                   style: TextStyle(fontSize: 20),
                                 ),
                               ),

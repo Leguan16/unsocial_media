@@ -66,7 +66,8 @@ class Register extends StatelessWidget {
                           return const AlreadyLoggedInDialog();
                         });
                   } else if (response.runtimeType == User) {
-                    Navigator.pushNamed(context, Profile.route);
+                    Navigator.pushNamed(context, Profile.route,
+                        arguments: UserManager.getUser()!);
                   } else if (!response) {
                     showDialog(
                         context: context,
