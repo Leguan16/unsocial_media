@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unsocial_media/dialogs/no_connection.dart';
+import 'package:unsocial_media/dialogs/unknown.dart';
 
 import '../dialogs/already_logged_in.dart';
 import '../dialogs/username_already_in_use.dart';
@@ -73,12 +74,17 @@ class Register extends StatelessWidget {
                   } else if (response.runtimeType == User) {
                     Navigator.pushNamed(context, Profile.route,
                         arguments: UserManager.getUser()!);
-                  } else if (!response) {
+                  } else if (response.runtimeType == bool && !response) {
                     showDialog(
                         context: context,
                         builder: (context) {
                           return const UserNameAlreadyTakenDialog();
                         });
+                  } else {
+                    showDialog(
+                        context: context,
+                        builder: (context) => UnknownErrorDialog(
+                            response.runtimeType == int ? response : -100));
                   }
                 }
               },

@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:unsocial_media/dialogs/no_connection.dart';
 import 'package:unsocial_media/pages/profile.dart';
+import 'package:unsocial_media/requests/image_requests.dart';
 
 import '../../user_management/user_manager.dart';
 import '../../widgets/bottom_app_bar.dart';
@@ -19,16 +21,33 @@ class ProfileSettings extends StatefulWidget {
 class _ProfileSettingsState extends State<ProfileSettings> {
   Future pickImageForBanner() async {
     final image = await pickImage();
-    setState(() {
-      UserManager.getUser()!.profileBanner = image;
-    });
+
+    try {
+      var url = await ImageRequests.postImage(image);
+      UserManager.getUser()!.setProfileBannerUrl(url);
+
+      setState(() {
+        UserManager.getUser()!.profileBanner = image;
+      });
+    } on SocketException {
+      showDialog(context: context, builder: (context) => NoConnectionDialog());
+    }
   }
 
   Future pickImageForAvatar() async {
     final image = await pickImage();
-    setState(() {
-      UserManager.getUser()!.profileAvatar = image;
-    });
+
+    try {
+      var url = await ImageRequests.postImage(image);
+
+      UserManager.getUser()!.setProfileAvatarUrl(url);
+
+      setState(() {
+        UserManager.getUser()!.profileAvatar = image;
+      });
+    } on SocketException {
+      showDialog(context: context, builder: (context) => NoConnectionDialog());
+    }
   }
 
   pickImage() async {
@@ -53,11 +72,14 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                 height: 130,
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    image: UserManager.getUser()!.profileBanner == null
+                    image: UserManager.getUser()!.profileBannerUrl == null
                         ? null
                         : DecorationImage(
-                            image: FileImage(
-                                UserManager.getUser()!.profileBanner!))),
+                            image: Image.network(
+                            UserManager.getUser()!.profileBannerUrl!,
+                            errorBuilder: (context, error, stackTrace) =>
+                                Text(""),
+                          ).image)),
               ),
               GestureDetector(
                 onTap: () async => pickImageForBanner(),
@@ -88,15 +110,21 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                   children: [
                     Stack(
                       children: [
-                        UserManager.getUser()!.profileAvatar == null
+                        UserManager.getUser()!.profileAvatarUrl == null
                             ? Icon(
                                 Icons.account_circle_outlined,
                                 size: 50,
                               )
                             : CircleAvatar(
                                 radius: 25,
-                                backgroundImage: FileImage(
-                                    UserManager.getUser()!.profileAvatar!),
+                                backgroundImage: Image.network(
+                                  UserManager.getUser()!.profileAvatarUrl!,
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      Icon(
+                                    Icons.account_circle_outlined,
+                                    size: 50,
+                                  ),
+                                ).image,
                               ),
                         GestureDetector(
                           child: CircleAvatar(
@@ -121,7 +149,8 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                       child: Text("Save"),
                       onPressed: () {
                         Navigator.of(context).pushNamedAndRemoveUntil(
-                            Profile.route, (route) => false);
+                            Profile.route, (route) => false,
+                            arguments: UserManager.getUser());
                       },
                     ),
                   ],

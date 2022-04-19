@@ -4,18 +4,28 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 
 class ImageRequests {
-  static Future<String> postImage(File image) async {
-    String body = jsonEncode({
-      "image": image.readAsBytesSync(),
-    });
+  static postImage(File image) async {
+    final files = <http.MultipartFile>[];
 
-    var response = await http.post(Uri.parse("https://api.imgur.com/3/upload"),
-        body: body, headers: {"Authorization": "Client-ID 0caf98b9c83fbee"});
+    files.add(http.MultipartFile.fromBytes('image', image.readAsBytesSync(),
+        filename: image.path));
 
-    print(response.statusCode);
+    final request = http.MultipartRequest(
+        "POST", Uri.parse("https://api.imgur.com/3/upload"));
 
-    print(response.body);
+    request.files.addAll(files);
 
-    return "w";
+    request.headers.addAll(
+        {"Authorization": "Bearer b12ee3d46f9936102e3c5ad5ffdad77eede09c6e"});
+
+    var streamedResponse = await request.send();
+
+    var response = await http.Response.fromStream(streamedResponse);
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body)['data']['link'];
+    }
+
+    return false;
   }
 }

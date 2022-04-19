@@ -1,10 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:unsocial_media/dialogs/no_connection.dart';
+import 'package:unsocial_media/dialogs/unknown.dart';
 import 'package:unsocial_media/pages/profile.dart';
 import 'package:unsocial_media/pages/register.dart';
 import 'package:unsocial_media/user_management/user_manager.dart';
 import 'package:unsocial_media/widgets/bottom_app_bar.dart';
 
 import '../domain/post.dart';
+import '../requests/post_request.dart';
 
 class CreatePostPage extends StatelessWidget {
   const CreatePostPage({Key? key}) : super(key: key);
@@ -24,21 +29,32 @@ class CreatePostPage extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.send),
             onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                if (!UserManager.userLoggedIn()) {
-                  Navigator.pushNamed(context, Register.route);
-                  return;
+              try {
+                if (_formKey.currentState!.validate()) {
+                  if (!UserManager.userLoggedIn()) {
+                    Navigator.pushNamed(context, Register.route);
+                    return;
+                  }
+                  var response = PostRequests.postPost(Post(
+                      contentController.text,
+                      UserManager.getUser()!.name,
+                      DateTime.now(),
+                      UserManager.getUser()!));
+
+                  if (response == 200) {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        Profile.route, (route) => false,
+                        arguments: UserManager.getUser()!);
+                  } else {
+                    showDialog(
+                        context: context,
+                        builder: (context) => UnknownErrorDialog(response));
+                  }
                 }
-
-                UserManager.getUser()!.addPost(Post(
-                    contentController.text,
-                    UserManager.getUser()!.name,
-                    DateTime.now(),
-                    UserManager.getUser()!));
-
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    Profile.route, (route) => false,
-                    arguments: UserManager.getUser()!);
+              } on SocketException {
+                showDialog(
+                    context: context,
+                    builder: (context) => NoConnectionDialog());
               }
             },
           )

@@ -30,9 +30,12 @@ class UserManager {
 
     _user = User(username, Uuid().v1(), password);
 
-    UserRequests.postUser(_user!);
+    response = UserRequests.postUser(_user!);
 
-    return login();
+    if (response == 200) {
+      return login();
+    }
+    return response;
   }
 
   static login([String? username, String? password]) async {

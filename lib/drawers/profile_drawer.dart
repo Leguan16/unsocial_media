@@ -5,8 +5,6 @@ import 'package:unsocial_media/user_management/user_manager.dart';
 class ProfileDrawer extends StatelessWidget {
   const ProfileDrawer({Key? key}) : super(key: key);
 
-
-
   @override
   Widget build(BuildContext context) {
     final List<ListTile> _drawerContent = [
@@ -34,7 +32,6 @@ class ProfileDrawer extends StatelessWidget {
                 color: Colors.green,
               ),
           itemCount: _drawerContent.length),
-
     );
   }
 }

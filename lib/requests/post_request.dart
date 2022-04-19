@@ -18,10 +18,12 @@ class PostRequests {
     });
 
     if (dotenv.isInitialized) {
-      await http.post(
+      var response = await http.post(
         Uri.parse('${dotenv.env['firebaseUrl']!}/posts.json'),
         body: body,
       );
+
+      return response.statusCode;
 
       // await http.post(
       //   Uri.parse(

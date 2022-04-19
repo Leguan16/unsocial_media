@@ -1,27 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:unsocial_media/domain/user.dart';
+import 'package:unsocial_media/widgets/failed_to_load_posts.dart';
+import 'package:unsocial_media/widgets/no_posts.dart';
 import 'package:unsocial_media/widgets/post_widget.dart';
 
 import '../domain/post.dart';
 import '../drawers/profile_drawer.dart';
 import '../provider/post_provider.dart';
-import '../user_management/user_manager.dart';
 import '../widgets/bottom_app_bar.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
 
   static const String route = "/profile";
 
   @override
+  State<Profile> createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  late Future _posts;
+
+  @override
   Widget build(BuildContext context) {
-    var posts = PostProvider.fetch();
     User user = ModalRoute.of(context)!.settings.arguments as User;
 
     return Scaffold(
       endDrawer: ProfileDrawer(),
       bottomNavigationBar: AppBarBottom(),
       body: NestedScrollView(
+        physics: NeverScrollableScrollPhysics(),
         headerSliverBuilder: (context, _) {
           return [
             SliverAppBar(
@@ -29,8 +37,13 @@ class Profile extends StatelessWidget {
               pinned: true,
               expandedHeight: 130,
               flexibleSpace: FlexibleSpaceBar(
-                background: ColoredBox(color: Colors.white),
-              ),
+                  background: user.profileBannerUrl == null
+                      ? ColoredBox(color: Colors.white)
+                      : Image.network(
+                          user.profileBannerUrl!,
+                          errorBuilder: (context, error, stackTrace) =>
+                              ColoredBox(color: Colors.white),
+                        )),
             ),
             SliverList(
               delegate: SliverChildListDelegate(
@@ -38,11 +51,12 @@ class Profile extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            user.profileAvatar == null
+                            user.profileAvatarUrl == null
                                 ? Icon(
                                     Icons.account_circle_outlined,
                                     size: 50,
@@ -50,8 +64,16 @@ class Profile extends StatelessWidget {
                                 : CircleAvatar(
                                     radius: 30,
                                     //todo change this to networkImage
-                                    backgroundImage:
-                                        FileImage(user.profileAvatar!),
+                                    // backgroundImage:
+                                    //     NetworkImage(user.profileAvatarUrl!),
+                                    backgroundImage: Image.network(
+                                      user.profileAvatarUrl!,
+                                      errorBuilder:
+                                          (context, error, stackTrace) => Icon(
+                                        Icons.account_circle_outlined,
+                                        size: 50,
+                                      ),
+                                    ).image,
                                   ),
                             SizedBox(
                               width: MediaQuery.of(context).size.width * 0.1,
@@ -65,9 +87,10 @@ class Profile extends StatelessWidget {
                                   style: TextStyle(fontSize: 20),
                                 ),
                               ),
-                            )
+                            ),
                           ],
-                        )
+                        ),
+                        SizedBox(height: 10),
                       ],
                     ),
                   )
@@ -78,34 +101,51 @@ class Profile extends StatelessWidget {
         },
         body: FutureBuilder(
             builder: (context, snapshot) {
-              return snapshot.connectionState == ConnectionState.waiting
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : buildPosts();
+              switch (snapshot.connectionState) {
+                case ConnectionState.waiting:
+                  return Center(child: CircularProgressIndicator());
+                default:
+                  if (snapshot.hasError) {
+                    return FailedToLoadPosts();
+                  } else {
+                    return buildPosts(user);
+                  }
+              }
             },
-            future: posts),
+            future: _posts),
       ),
     );
   }
 
-  buildPosts() {
-    List<Post> posts = PostProvider.getPostsOfUser(UserManager.getUser()!);
+  @override
+  void initState() {
+    super.initState();
+    _posts = PostProvider.fetch();
+  }
+
+  buildPosts(User user) {
+    List<Post> posts = PostProvider.getPostsOfUser(user);
 
     if (posts.isEmpty) {
-      return Text("No Posts");
+      return NoPosts();
     }
 
-    return ListView.separated(
-      itemCount: posts.length,
-      itemBuilder: (context, index) {
-        var post = posts[index];
-        return PostWidget(post);
-      },
-      separatorBuilder: (_, index) {
-        return Divider(
-          color: Colors.amber,
-        );
+    return RefreshIndicator(
+      child: ListView.separated(
+        itemCount: posts.length,
+        itemBuilder: (context, index) {
+          var post = posts[index];
+          return PostWidget(post);
+        },
+        separatorBuilder: (_, index) {
+          return Divider(
+            color: Colors.amber,
+          );
+        },
+      ),
+      onRefresh: () async {
+        await PostProvider.fetch();
+        setState(() {});
       },
     );
   }

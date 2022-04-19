@@ -10,22 +10,26 @@ class UserRequests {
     String body = jsonEncode({
       'id': user.id,
       'username': user.name,
-      'profileAvatar': user.profileAvatar,
-      'passwordHash': user.hashedPassword
+      'profileAvatarUrl': user.profileAvatarUrl,
+      'passwordHash': user.hashedPassword,
+      'profileBannerUrl': user.profileBannerUrl,
+      'bio': user.bio,
     });
 
     if (dotenv.isInitialized) {
-      await http.post(
+      var response = await http.post(
         Uri.parse(
             '${dotenv.env['firebaseUrl']!}/users/${user.name.toLowerCase()}.json'),
         body: body,
       );
+
+      return response.statusCode;
     }
   }
 
   static Future<dynamic> getUser(String username) async {
     if (dotenv.isInitialized) {
-      http.Response? response;
+      http.Response response;
       try {
         response = (await http.get(Uri.parse(
             '${dotenv.env['firebaseUrl']!}/users/${username.toLowerCase()}.json')));
@@ -33,7 +37,7 @@ class UserRequests {
         return 503;
       }
 
-      if (response == null || response.body == 'null') {
+      if (response.body == 'null') {
         return false;
       }
 
@@ -47,6 +51,4 @@ class UserRequests {
       return false;
     }
   }
-
-  static Future<dynamic> getAllUsers() async {}
 }
