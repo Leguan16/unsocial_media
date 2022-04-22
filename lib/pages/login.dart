@@ -23,14 +23,14 @@ class LoginPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Login"),
+        title: const Text("Login"),
       ),
       body: Form(
         key: _formKey,
         child: Column(
           children: [
             TextFormField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Username",
               ),
               controller: usernameController,
@@ -38,14 +38,14 @@ class LoginPage extends StatelessWidget {
             ),
             TextFormField(
               obscureText: true,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Password",
               ),
               controller: passwordController,
               validator: validatePassword,
             ),
             ElevatedButton(
-              child: Text("Login"),
+              child: const Text("Login"),
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
                   var response = await UserManager.login(
@@ -54,22 +54,23 @@ class LoginPage extends StatelessWidget {
                   if (response == 1) {
                     showDialog(
                         context: context,
-                        builder: (context) => AlreadyLoggedInDialog());
+                        builder: (context) => const AlreadyLoggedInDialog());
                   } else if (response == 2) {
                     showDialog(
                         context: context,
-                        builder: (context) => InvalidPasswordDialog());
+                        builder: (context) => const InvalidPasswordDialog());
                   } else if (response == 503) {
                     showDialog(
                         context: context,
-                        builder: (context) => NoConnectionDialog());
+                        builder: (context) => const NoConnectionDialog());
                   } else if (response.runtimeType == User) {
                     Navigator.pushNamed(context, Profile.route,
                         arguments: UserManager.getUser());
                   } else if (!response) {
                     showDialog(
                         context: context,
-                        builder: (context) => AccountDoesNotExistDialog());
+                        builder: (context) =>
+                            const AccountDoesNotExistDialog());
                   }
                 }
               },
@@ -77,7 +78,7 @@ class LoginPage extends StatelessWidget {
             TextButton(
               onPressed: () =>
                   Navigator.popAndPushNamed(context, Register.route),
-              child: Text("Register now"),
+              child: const Text("Register now"),
             ),
           ],
         ),

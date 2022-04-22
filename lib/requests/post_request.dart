@@ -9,18 +9,10 @@ import '../domain/post.dart';
 
 class PostRequests {
   static postPost(Post post) async {
-    String body = jsonEncode({
-      "id": post.id,
-      "content": post.content,
-      "author": post.author.name,
-      "time": post.time.millisecondsSinceEpoch,
-      "dislikes": post.dislikes,
-    });
-
     if (dotenv.isInitialized) {
       var response = await http.post(
         Uri.parse('${dotenv.env['firebaseUrl']!}/posts.json'),
-        body: body,
+        body: post.toJson(),
       );
 
       return response.statusCode;
@@ -33,7 +25,6 @@ class PostRequests {
     }
   }
 
-  //todo remove ?
   static Future<List<Post>> fetchPosts() async {
     var response =
         await http.get(Uri.parse('${dotenv.env['firebaseUrl']!}/posts.json'));

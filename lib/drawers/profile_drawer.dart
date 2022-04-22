@@ -9,15 +9,15 @@ class ProfileDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<ListTile> _drawerContent = [
       ListTile(
-        title: Text("Settings"),
-        trailing: Icon(Icons.settings),
+        title: const Text("Settings"),
+        trailing: const Icon(Icons.settings),
         onTap: () {
           Navigator.pushNamed(context, SettingsPage.route);
         },
       ),
       ListTile(
-        title: Text("Log Out"),
-        trailing: Icon(Icons.logout),
+        title: const Text("Log Out"),
+        trailing: const Icon(Icons.logout),
         onTap: () {
           UserManager.logout();
           Navigator.pushNamedAndRemoveUntil(context, "/", (_) => false);
@@ -28,7 +28,7 @@ class ProfileDrawer extends StatelessWidget {
     return Drawer(
       child: ListView.separated(
           itemBuilder: (context, index) => _drawerContent[index],
-          separatorBuilder: (context, index) => Divider(
+          separatorBuilder: (context, index) => const Divider(
                 color: Colors.green,
               ),
           itemCount: _drawerContent.length),

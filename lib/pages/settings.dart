@@ -10,7 +10,7 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final items = [
       ListTile(
-        title: Text("Profile"),
+        title: const Text("Profile"),
         onTap: () {
           Navigator.of(context).pushNamed(ProfileSettings.route);
         },
@@ -18,11 +18,11 @@ class SettingsPage extends StatelessWidget {
     ];
     return Scaffold(
         appBar: AppBar(
-          title: Text("Settings"),
+          title: const Text("Settings"),
         ),
         body: ListView.separated(
             itemBuilder: (context, index) => items[index],
-            separatorBuilder: (context, index) => Divider(
+            separatorBuilder: (context, index) => const Divider(
                   color: Colors.amber,
                 ),
             itemCount: items.length));

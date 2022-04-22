@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class UnknownErrorDialog extends StatelessWidget {
-  int id;
+  final int id;
 
-  UnknownErrorDialog(this.id, {Key? key}) : super(key: key);
+  const UnknownErrorDialog(this.id, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

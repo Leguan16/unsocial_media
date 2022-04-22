@@ -9,7 +9,7 @@ class NoPosts extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
+        children: const [
           Icon(
             Icons.block,
             size: 30,

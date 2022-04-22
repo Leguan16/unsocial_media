@@ -28,7 +28,7 @@ class UserManager {
       return false;
     }
 
-    _user = User(username, Uuid().v1(), password);
+    _user = User(username, const Uuid().v1(), password);
 
     response = await UserRequests.postUser(_user!);
 

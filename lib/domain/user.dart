@@ -53,6 +53,17 @@ class User {
         json['bio']);
   }
 
+  String toJson() {
+    return jsonEncode({
+      'id': id,
+      'username': name,
+      'profileAvatarUrl': profileAvatarUrl,
+      'passwordHash': hashedPassword,
+      'profileBannerUrl': profileBannerUrl,
+      'bio': bio,
+    });
+  }
+
   @override
   String toString() {
     return 'User{name: $name, id: $id, profileAvatarUrl: $profileAvatarUrl, profileAvatar: $profileAvatar, hashedPassword: $hashedPassword, profileBannerUrl: $profileBannerUrl, profileBanner: $profileBanner, bio: $bio}';

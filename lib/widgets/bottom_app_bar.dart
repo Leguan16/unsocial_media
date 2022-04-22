@@ -15,12 +15,13 @@ class AppBarBottom extends StatelessWidget {
       child: Row(
         children: [
           IconButton(
-            icon: Icon(Icons.home),
+            icon: const Icon(Icons.home),
             onPressed: () {
               Navigator.pushAndRemoveUntil(
                 context,
                 PageRouteBuilder(
-                  pageBuilder: (context, animation1, animation2) => HomePage(),
+                  pageBuilder: (context, animation1, animation2) =>
+                      const HomePage(),
                   transitionDuration: Duration.zero,
                   reverseTransitionDuration: Duration.zero,
                 ),
@@ -32,14 +33,14 @@ class AppBarBottom extends StatelessWidget {
             width: MediaQuery.of(context).size.width * 0.31,
           ),
           IconButton(
-            icon: Icon(Icons.add),
+            icon: const Icon(Icons.add),
             onPressed: () {
               if (UserManager.userLoggedIn()) {
                 Navigator.pushAndRemoveUntil(
                   context,
                   PageRouteBuilder(
                     pageBuilder: (context, animation1, animation2) =>
-                        CreatePostPage(),
+                        const CreatePostPage(),
                     transitionDuration: Duration.zero,
                     reverseTransitionDuration: Duration.zero,
                   ),
@@ -54,13 +55,13 @@ class AppBarBottom extends StatelessWidget {
             width: MediaQuery.of(context).size.width * 0.31,
           ),
           IconButton(
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.search),
             onPressed: () {
               Navigator.pushAndRemoveUntil(
                 context,
                 PageRouteBuilder(
                   pageBuilder: (context, animation1, animation2) =>
-                      SearchPage(),
+                      const SearchPage(),
                   transitionDuration: Duration.zero,
                   reverseTransitionDuration: Duration.zero,
                 ),

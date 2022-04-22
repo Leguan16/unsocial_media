@@ -70,7 +70,7 @@ class Register extends StatelessWidget {
                   } else if (response == 503) {
                     showDialog(
                         context: context,
-                        builder: (context) => NoConnectionDialog());
+                        builder: (context) => const NoConnectionDialog());
                   } else if (response.runtimeType == User) {
                     Navigator.pushNamed(context, Profile.route,
                         arguments: UserManager.getUser()!);

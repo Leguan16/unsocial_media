@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:unsocial_media/domain/user.dart';
-import 'package:unsocial_media/user_management/user_manager.dart';
 import 'package:unsocial_media/widgets/failed_to_load_posts.dart';
 import 'package:unsocial_media/widgets/no_posts.dart';
 import 'package:unsocial_media/widgets/post_widget.dart';
@@ -27,11 +26,10 @@ class _ProfileState extends State<Profile> {
     User user = ModalRoute.of(context)!.settings.arguments as User;
 
     return Scaffold(
-      endDrawer:
-          user.name == UserManager.getUser()!.name ? ProfileDrawer() : null,
-      bottomNavigationBar: AppBarBottom(),
+      endDrawer: const ProfileDrawer(),
+      bottomNavigationBar: const AppBarBottom(),
       body: NestedScrollView(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         headerSliverBuilder: (context, _) {
           return [
             SliverAppBar(
@@ -40,18 +38,19 @@ class _ProfileState extends State<Profile> {
               expandedHeight: 130,
               flexibleSpace: FlexibleSpaceBar(
                   background: user.profileBannerUrl == null
-                      ? ColoredBox(color: Colors.white)
+                      ? const ColoredBox(color: Colors.deepOrangeAccent)
                       : Image.network(
                           user.profileBannerUrl!,
                           errorBuilder: (context, error, stackTrace) =>
-                              ColoredBox(color: Colors.white),
+                              const ColoredBox(color: Colors.deepOrangeAccent),
                         )),
             ),
             SliverList(
               delegate: SliverChildListDelegate(
                 [
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -59,7 +58,7 @@ class _ProfileState extends State<Profile> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             user.profileAvatarUrl == null
-                                ? Icon(
+                                ? const Icon(
                                     Icons.account_circle_outlined,
                                     size: 50,
                                   )
@@ -71,7 +70,8 @@ class _ProfileState extends State<Profile> {
                                     backgroundImage: Image.network(
                                       user.profileAvatarUrl!,
                                       errorBuilder:
-                                          (context, error, stackTrace) => Icon(
+                                          (context, error, stackTrace) =>
+                                              const Icon(
                                         Icons.account_circle_outlined,
                                         size: 50,
                                       ),
@@ -83,16 +83,17 @@ class _ProfileState extends State<Profile> {
                             Align(
                               alignment: Alignment.topLeft,
                               child: Container(
-                                padding: EdgeInsets.symmetric(vertical: 10),
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
                                 child: Text(
                                   user.name,
-                                  style: TextStyle(fontSize: 20),
+                                  style: const TextStyle(fontSize: 20),
                                 ),
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                       ],
                     ),
                   )
@@ -105,10 +106,10 @@ class _ProfileState extends State<Profile> {
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.waiting:
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 default:
                   if (snapshot.hasError) {
-                    return FailedToLoadPosts();
+                    return const FailedToLoadPosts();
                   } else {
                     return buildPosts(user);
                   }
@@ -129,7 +130,7 @@ class _ProfileState extends State<Profile> {
     List<Post> posts = PostProvider.getPostsOfUser(user);
 
     if (posts.isEmpty) {
-      return NoPosts();
+      return const NoPosts();
     }
 
     return RefreshIndicator(
@@ -140,7 +141,7 @@ class _ProfileState extends State<Profile> {
           return PostWidget(post);
         },
         separatorBuilder: (_, index) {
-          return Divider(
+          return const Divider(
             color: Colors.amber,
           );
         },

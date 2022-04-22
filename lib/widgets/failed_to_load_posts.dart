@@ -9,7 +9,7 @@ class FailedToLoadPosts extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
+        children: const [
           Icon(
             Icons.cloud_off,
             size: 30,

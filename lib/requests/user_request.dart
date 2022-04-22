@@ -7,20 +7,11 @@ import 'package:unsocial_media/domain/user.dart';
 
 class UserRequests {
   static postUser(User user) async {
-    String body = jsonEncode({
-      'id': user.id,
-      'username': user.name,
-      'profileAvatarUrl': user.profileAvatarUrl,
-      'passwordHash': user.hashedPassword,
-      'profileBannerUrl': user.profileBannerUrl,
-      'bio': user.bio,
-    });
-
     if (dotenv.isInitialized) {
       var response = await http.post(
         Uri.parse(
             '${dotenv.env['firebaseUrl']!}/users/${user.name.toLowerCase()}.json'),
-        body: body,
+        body: user.toJson(),
       );
 
       return response.statusCode;

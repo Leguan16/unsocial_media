@@ -3,11 +3,11 @@ import 'package:unsocial_media/pages/profile.dart';
 import 'package:unsocial_media/pages/register.dart';
 import 'package:unsocial_media/provider/post_provider.dart';
 import 'package:unsocial_media/user_management/user_manager.dart';
-import 'package:unsocial_media/widgets/bottom_app_bar.dart';
-import 'package:unsocial_media/widgets/failed_to_load_posts.dart';
 import 'package:unsocial_media/widgets/no_posts.dart';
 
 import '../domain/post.dart';
+import '../widgets/bottom_app_bar.dart';
+import '../widgets/failed_to_load_posts.dart';
 import '../widgets/post_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Start"),
+        title: const Text("Start"),
         actions: [
           IconButton(
             onPressed: () {
@@ -41,24 +41,24 @@ class _HomePageState extends State<HomePage> {
                     backgroundImage: Image.network(
                       UserManager.getUser()!.profileAvatarUrl!,
                       errorBuilder: (context, error, stackTrace) =>
-                          Icon(Icons.account_circle_outlined),
+                          const Icon(Icons.account_circle_outlined),
                     ).image,
                   )
-                : Icon(Icons.account_circle_outlined),
+                : const Icon(Icons.account_circle_outlined),
           )
         ],
       ),
-      bottomNavigationBar: AppBarBottom(),
+      bottomNavigationBar: const AppBarBottom(),
       body: FutureBuilder(
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             default:
               if (snapshot.hasError) {
-                return FailedToLoadPosts();
+                return const FailedToLoadPosts();
               } else {
                 return buildPosts();
               }
@@ -79,19 +79,20 @@ class _HomePageState extends State<HomePage> {
     List<Post> posts = PostProvider.getAllPosts();
 
     if (posts.isEmpty) {
-      return NoPosts();
+      return const NoPosts();
     }
 
     return RefreshIndicator(
       child: ListView.separated(
-        physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+        physics: const BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics()),
         itemCount: posts.length,
         itemBuilder: (context, index) {
           var post = posts[index];
           return PostWidget(post);
         },
         separatorBuilder: (_, index) {
-          return Divider(
+          return const Divider(
             color: Colors.amber,
           );
         },

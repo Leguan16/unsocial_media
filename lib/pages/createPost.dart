@@ -24,10 +24,10 @@ class CreatePostPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Create Post"),
+        title: const Text("Create Post"),
         actions: [
           IconButton(
-            icon: Icon(Icons.send),
+            icon: const Icon(Icons.send),
             onPressed: () {
               try {
                 if (_formKey.currentState!.validate()) {
@@ -56,13 +56,13 @@ class CreatePostPage extends StatelessWidget {
               } on SocketException {
                 showDialog(
                     context: context,
-                    builder: (context) => NoConnectionDialog());
+                    builder: (context) => const NoConnectionDialog());
               }
             },
           )
         ],
       ),
-      bottomNavigationBar: AppBarBottom(),
+      bottomNavigationBar: const AppBarBottom(),
       body: Form(
         key: _formKey,
         child: Column(
@@ -73,13 +73,13 @@ class CreatePostPage extends StatelessWidget {
                 scrollDirection: Axis.vertical,
                 reverse: true,
                 child: TextFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: "Tell us something!",
                     border: InputBorder.none,
                   ),
                   maxLines: null,
                   scrollController: ScrollController(),
-                  style: TextStyle(fontSize: 20.0),
+                  style: const TextStyle(fontSize: 20.0),
                   controller: contentController,
                 ),
               ),

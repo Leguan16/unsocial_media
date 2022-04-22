@@ -39,7 +39,8 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                 UnknownErrorDialog(url.runtimeType == int ? url : -100));
       }
     } on SocketException {
-      showDialog(context: context, builder: (context) => NoConnectionDialog());
+      showDialog(
+          context: context, builder: (context) => const NoConnectionDialog());
     }
   }
 
@@ -62,7 +63,8 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                 UnknownErrorDialog(url.runtimeType == int ? url : -100));
       }
     } on SocketException {
-      showDialog(context: context, builder: (context) => NoConnectionDialog());
+      showDialog(
+          context: context, builder: (context) => const NoConnectionDialog());
     }
   }
 
@@ -79,7 +81,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: AppBarBottom(),
+      bottomNavigationBar: const AppBarBottom(),
       body: ListView(
         children: [
           Stack(
@@ -94,7 +96,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                             image: Image.network(
                             UserManager.getUser()!.profileBannerUrl!,
                             errorBuilder: (context, error, stackTrace) =>
-                                Text(""),
+                                const Text(""),
                           ).image)),
               ),
               GestureDetector(
@@ -105,7 +107,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                    children: const [
                       Icon(
                         Icons.camera_alt,
                         size: 70,
@@ -118,7 +120,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
             ],
           ),
           Container(
-            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
             child: Column(
               children: [
                 Row(
@@ -127,7 +129,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                     Stack(
                       children: [
                         UserManager.getUser()!.profileAvatarUrl == null
-                            ? Icon(
+                            ? const Icon(
                                 Icons.account_circle_outlined,
                                 size: 50,
                               )
@@ -136,7 +138,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                                 backgroundImage: Image.network(
                                   UserManager.getUser()!.profileAvatarUrl!,
                                   errorBuilder: (context, error, stackTrace) =>
-                                      Icon(
+                                      const Icon(
                                     Icons.account_circle_outlined,
                                     size: 50,
                                   ),
@@ -148,7 +150,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                             backgroundColor: Colors.black54,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
+                              children: const [
                                 Icon(
                                   Icons.camera_alt,
                                   color: Colors.black,
@@ -162,7 +164,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                       ],
                     ),
                     TextButton(
-                      child: Text("Save"),
+                      child: const Text("Save"),
                       onPressed: () {
                         Navigator.of(context).pushNamedAndRemoveUntil(
                             Profile.route, (route) => false,

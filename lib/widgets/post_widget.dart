@@ -13,13 +13,12 @@ class PostWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(post.author);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ListTile(
           leading: GestureDetector(
-            child: Icon(
+            child: const Icon(
               Icons.account_circle_outlined,
               size: 40,
             ),

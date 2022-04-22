@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:unsocial_media/requests/user_request.dart';
 import 'package:uuid/uuid.dart';
 
@@ -30,6 +32,16 @@ class Post {
       json['id'],
       json['dislikes'],
     );
+  }
+
+  String toJson() {
+    return jsonEncode({
+      "id": id,
+      "content": content,
+      "author": author.name,
+      "time": time.millisecondsSinceEpoch,
+      "dislikes": dislikes,
+    });
   }
 
   fetchAuthor() async {
